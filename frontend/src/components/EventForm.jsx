@@ -1,12 +1,35 @@
 // src/components/EventForm.jsx
 // import axios from 'axios'
 
-import { useState } from "react";
+import { useState , useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 
-function EventForm({onAddEvent}) {
+function EventForm() {
     const [name, setName] = useState("");
     const [date, setDate] = useState("");
     const [location, setLocation] = useState("");
+    const navigate=useNavigate()
+    const [events, setEvents]=useState([]);
+    
+    const fetchedData=async()=>{
+        fetch(`http://localhost:5000/events`)
+        .then((res) => res.json())
+        .then((data) => {
+            setEvents(data)
+            console.log(data)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+    
+    useEffect(()=>{
+        fetchedData()
+    },[])
+    
+    const onAddEvent=(event)=>{
+        setEvents((prev)=>[...prev, event])
+    }
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
@@ -16,6 +39,7 @@ function EventForm({onAddEvent}) {
             body:JSON.stringify({name, date, location})
         });
         alert("Event added successfully!")
+        navigate('/')
         onAddEvent(event)
         setName("")
         setDate("")

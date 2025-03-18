@@ -1,7 +1,6 @@
 // src/components/EventList.jsx
 
 import { useEffect, useState } from "react";
-import EventForm from "./EventForm";
 import EventItem from "./EventItem";
 
 
@@ -24,17 +23,13 @@ function EventList() {
         fetchedData()
     },[])
 
-    const handleEvent=(event)=>{
-        setEvents((prev)=>[...prev, event])
-    }
-
     return(
         <>
             {/* Event list */}
-            <EventForm onAddEvent={handleEvent}/>
+            <h1>Events: </h1>
             {events.length===0? <p>No events found</p> : (
-                events?.map((event)=>{
-                    <EventItem event={event}/>
+                events?.map((event, i)=>{
+                    return <EventItem event={event} key={i}/>
                 })
             )}
         </>
